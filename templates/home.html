@@ -1,0 +1,52 @@
+{%extends "base.html"%} {%block head%}
+<title>Home Page!</title>
+
+{%endblock%} {%block body%}
+<div class="container mx-auto mt-4 text-center">
+  <h1>Let create our todo list </h1>
+</div>
+<div class="container mt-5">
+  <form class="row" method="POST">
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        name="task"
+        class="form-control"
+        placeholder="add Task"
+        aria-label="Recipient's username"
+        aria-describedby="button-addon2"
+      />
+      <button class="btn btn-success" type="submit" id="button-addon2">
+        add Task
+      </button>
+    </div>
+  </form>
+</div>
+<div class="container">
+  <div class="card">
+    <div class="card-header">List of things</div>
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        {% for task in result %}
+        <li
+          class="list-group-item d-flex justify-content-between {% if task['status']%}text-decoration-line-through list-group-item-dark mt-1 rounded{% endif%}"
+        >
+          <a disabled href="{{url_for('update',id=task['_id'])}}" class="text-decoration-none">{{ task['task'] |capitalize }}</a>
+          <form action="{{url_for('delete',id=task['_id'])}}" method="post">
+              <button class="btn btn-sm btn-outline-danger" {% if task['status']%} disabled {% endif %} >
+                  <i class="bi bi-trash"></i>
+                </button>
+            </form>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+    fetch('http://example.com/movies.json')
+  .then(response => response.json())
+  .then(data => console.log(data));
+</script>
+{%endblock%}
